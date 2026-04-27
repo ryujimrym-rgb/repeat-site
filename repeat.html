@@ -3,147 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Firebase Gallery</title>
+  <title>Repeat | Ryuji Maruyama</title>
+  <link rel="stylesheet" href="style.css">
 
   <style>
-    :root {
-      --header-h: 72px;
-      --gutter-x: 30px;
-      --tile-gap: 14px;
-      --grid-cols: 12;
-      --grid-row: clamp(52px, 6.2vw, 98px);
-    }
-
-    html,
-    body {
-      margin: 0;
-      height: 100%;
+    body.page-repeat {
       overflow: hidden;
-      font-family: sans-serif;
-      background: #fff;
-      color: #111;
+      background: #f7f7f7;
     }
 
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: var(--header-h);
-      padding: 0 var(--gutter-x);
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      z-index: 1000;
-      background: #fff;
-    }
-
-    .header-container {
-      width: 100%;
-      display: flex;
-      align-items: center;
-    }
-
-    .header-title {
-      margin: 0;
-      font-weight: 400;
-      letter-spacing: 0.35em;
-      font-size: 0.7rem;
-    }
-
-    .header-title__link,
-    header nav a {
-      text-decoration: none;
-      color: #545454;
-    }
-
-    header nav {
-      margin-left: auto;
-    }
-
-    header nav ul {
-      display: flex;
-      align-items: center;
-      gap: 60px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    header nav a {
-      font-size: 0.7rem;
-      letter-spacing: 0.35em;
-    }
-
-    #status {
-      display: none;
-    }
-
-    .loading-overlay {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      z-index: 500;
-      transition: opacity 0.25s ease;
-    }
-
-    .loading-overlay.is-hidden {
-      opacity: 0;
-    }
-
-    .loading-dots {
-      color: #545454;
-      font-size: 1.5rem;
-      letter-spacing: 0.2em;
-    }
-
-    .loading-dots span {
-      animation: loadingPulse 1.05s infinite ease-in-out;
-    }
-
-    .loading-dots span:nth-child(2) {
-      animation-delay: 0.15s;
-    }
-
-    .loading-dots span:nth-child(3) {
-      animation-delay: 0.3s;
-    }
-
-    @keyframes loadingPulse {
-      0%, 80%, 100% {
-        opacity: 0.2;
-        transform: translateY(0);
-      }
-
-      40% {
-        opacity: 1;
-        transform: translateY(-2px);
-      }
-    }
-
-    .gallery {
+    .repeat-gallery {
       width: 100%;
       height: calc(100vh - var(--header-h));
-      overflow-y: auto;
+      margin-top: var(--header-h);
+      padding: 14px;
+      box-sizing: border-box;
+      overflow: auto;
       scrollbar-width: none;
       -ms-overflow-style: none;
 
       display: grid;
-      grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
-      grid-auto-rows: var(--grid-row);
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-auto-rows: clamp(52px, 6.2vw, 98px);
       grid-auto-flow: dense;
-      gap: var(--tile-gap);
-
-      margin: 0;
-      margin-top: var(--header-h);
-      padding: var(--tile-gap);
-      box-sizing: border-box;
+      gap: 14px;
     }
 
-    .gallery::-webkit-scrollbar {
+    .repeat-gallery::-webkit-scrollbar {
       display: none;
     }
 
@@ -151,12 +37,10 @@
       width: 100%;
       height: 100%;
       min-height: 0;
+      overflow: hidden;
       grid-column: span var(--col-span, 3);
       grid-row: span var(--row-span, 4);
-      display: flex;
-      align-items: stretch;
-      justify-content: stretch;
-      overflow: hidden;
+      background: #eee;
     }
 
     .gallery-inner {
@@ -165,7 +49,7 @@
       display: flex;
       align-items: stretch;
       justify-content: stretch;
-      background: #f5f5f5;
+      background: #f2f2f2;
     }
 
     .gallery-inner img,
@@ -177,46 +61,39 @@
     }
 
     @media (max-width: 800px) {
-      :root {
-        --header-h: 56px;
-        --gutter-x: 16px;
-        --tile-gap: 10px;
-        --grid-cols: 8;
-        --grid-row: clamp(48px, 11vw, 80px);
-      }
-
-      header nav ul {
-        gap: 30px;
+      .repeat-gallery {
+        padding: 10px;
+        gap: 10px;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        grid-auto-rows: clamp(48px, 11vw, 80px);
       }
     }
 
     @media (max-width: 500px) {
-      :root {
-        --grid-cols: 4;
-        --grid-row: clamp(46px, 18vw, 72px);
+      .repeat-gallery {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-auto-rows: clamp(46px, 18vw, 72px);
       }
     }
   </style>
 </head>
 
-<body>
+<body class="page-repeat">
   <header>
     <div class="header-container">
       <h1 class="header-title">
-        <a href="profile.html" class="header-title__link">RYUJI MARUYAMA</a>
+        <a href="profile.html" class="header-title__link js-hover-anim">RYUJI MARUYAMA</a>
       </h1>
 
       <nav aria-label="global">
         <ul>
-          <li><a href="index.html">in...</a></li>
-          <li><a href="all.html">etc...</a></li>
-          <li><a href="repeat.html">repeat...</a></li>
+          <li><a href="index.html" class="nav-top js-hover-anim">in...</a></li>
+          <li><a href="all.html" class="nav-all js-hover-anim">etc...</a></li>
+          <li><a href="repeat.html" class="nav-repeat js-hover-anim">repeat...</a></li>
         </ul>
       </nav>
     </div>
   </header>
-
-  <p id="status">読み込み中...</p>
 
   <div class="loading-overlay" id="loadingOverlay" aria-hidden="true">
     <div class="loading-dots">
@@ -224,126 +101,177 @@
     </div>
   </div>
 
-  <div class="gallery" id="gallery"></div>
+  <p id="status">読み込み中...</p>
+
+  <div class="repeat-gallery" id="gallery"></div>
 
   <script>
-const gallery = document.getElementById("gallery");
-const loadingOverlay = document.getElementById("loadingOverlay");
+  (() => {
+    const gallery = document.getElementById("gallery");
+    const loadingOverlay = document.getElementById("loadingOverlay");
 
-/* 🔥 ここに素材を直接書く */
-const mediaItems = [
-  "assets/01.mp4",
-  "assets/02.mp4",
-  "assets/03.webp",
-  "assets/04.webp"
-];
+    const mediaItems = [
+      "photo&movie/01.mp4",
+      "photo&movie/02.mp4",
+      "photo&movie/03.webp",
+      "photo&movie/04.webp"
+    ];
 
-/* ========================= */
+    function splitHoverLetters(el) {
+      if (!el || el.dataset.splitted === "1") return;
 
-function setLoadingVisible(isVisible) {
-  loadingOverlay.classList.toggle("is-hidden", !isVisible);
-}
+      const text = el.textContent;
+      el.textContent = "";
 
-function createGalleryItem(src) {
-  const item = document.createElement("div");
-  item.className = "gallery-item";
+      [...text].forEach((ch, i) => {
+        const span = document.createElement("span");
+        if (ch === " ") {
+          span.className = "space";
+          span.innerHTML = "&nbsp;";
+        } else {
+          span.textContent = ch;
+        }
+        span.style.setProperty("--i", i);
+        el.appendChild(span);
+      });
 
-  const inner = document.createElement("div");
-  inner.className = "gallery-inner";
+      el.dataset.splitted = "1";
+    }
 
-  if (src.endsWith(".mp4") || src.endsWith(".webm")) {
-    const video = document.createElement("video");
-    video.src = src;
-    video.muted = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.preload = "none";
+    document.querySelectorAll(".js-hover-anim").forEach(splitHoverLetters);
 
-    inner.appendChild(video);
-  } else {
-    const img = document.createElement("img");
-    img.src = src;
-    img.loading = "lazy";
-    img.decoding = "async";
+    function setLoadingVisible(isVisible) {
+      loadingOverlay.classList.toggle("is-hidden", !isVisible);
+    }
 
-    inner.appendChild(img);
-  }
+    function createGalleryItem(src) {
+      const item = document.createElement("div");
+      item.className = "gallery-item";
 
-  item.appendChild(inner);
-  return item;
-}
+      const inner = document.createElement("div");
+      inner.className = "gallery-inner";
 
-function hashString(value) {
-  let hash = 0;
-  for (let i = 0; i < value.length; i++) {
-    hash = (hash << 5) - hash + value.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}
+      const fileName = src.toLowerCase();
 
-function getRandomSpanPair(seedKey) {
-  const hash = hashString(seedKey);
-  const patterns = [
-    [2,3],[3,2],[3,3],[4,3],[3,4],[5,3],[3,5],[4,4],[6,4]
-  ];
+      if (
+        fileName.endsWith(".mp4") ||
+        fileName.endsWith(".webm") ||
+        fileName.endsWith(".mov")
+      ) {
+        const video = document.createElement("video");
+        video.src = src;
+        video.muted = true;
+        video.loop = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        video.preload = "none";
+        video.controls = false;
 
-  const [col,row] = patterns[hash % patterns.length];
-  return [col,row];
-}
+        inner.appendChild(video);
+      } else {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "";
+        img.loading = "lazy";
+        img.decoding = "async";
 
-function buildGallery() {
-  gallery.textContent = "";
+        inner.appendChild(img);
+      }
 
-  const fragment = document.createDocumentFragment();
+      item.appendChild(inner);
+      return item;
+    }
 
-  mediaItems.forEach((src) => {
-    const item = createGalleryItem(src);
+    function hashString(value) {
+      let hash = 0;
 
-    const [colSpan,rowSpan] = getRandomSpanPair(src);
-    item.style.setProperty("--col-span", colSpan);
-    item.style.setProperty("--row-span", rowSpan);
+      for (let i = 0; i < value.length; i++) {
+        hash = (hash << 5) - hash + value.charCodeAt(i);
+        hash |= 0;
+      }
 
-    fragment.appendChild(item);
-  });
+      return Math.abs(hash);
+    }
 
-  gallery.appendChild(fragment);
+    function getRandomSpanPair(seedKey) {
+      const hash = hashString(seedKey);
+      const patterns = [
+        [2, 3],
+        [3, 2],
+        [3, 3],
+        [4, 3],
+        [3, 4],
+        [5, 3],
+        [3, 5],
+        [4, 4],
+        [6, 4]
+      ];
 
-  setLoadingVisible(false);
-}
+      const [col, row] = patterns[hash % patterns.length];
 
-/* ========================= */
-/* スクロール操作 */
+      return [col, row];
+    }
 
-function setupPageWideScroll() {
-  window.addEventListener("wheel", (e) => {
-    e.preventDefault();
-    gallery.scrollTop += e.deltaY;
-  }, { passive: false });
-}
+    function buildGallery() {
+      gallery.textContent = "";
 
-function setupPageWideTouchScroll() {
-  let startY = 0;
+      const fragment = document.createDocumentFragment();
 
-  window.addEventListener("touchstart", (e) => {
-    startY = e.touches[0].clientY;
-  });
+      mediaItems.forEach((src) => {
+        const item = createGalleryItem(src);
 
-  window.addEventListener("touchmove", (e) => {
-    e.preventDefault();
-    const currentY = e.touches[0].clientY;
-    gallery.scrollTop += (startY - currentY);
-    startY = currentY;
-  }, { passive: false });
-}
+        const [colSpan, rowSpan] = getRandomSpanPair(src);
+        item.style.setProperty("--col-span", colSpan);
+        item.style.setProperty("--row-span", rowSpan);
 
-/* ========================= */
+        fragment.appendChild(item);
+      });
 
-setupPageWideScroll();
-setupPageWideTouchScroll();
+      gallery.appendChild(fragment);
+      setLoadingVisible(false);
+    }
 
-setLoadingVisible(true);
-buildGallery();
-</script>
+    function setupPageWideScroll() {
+      window.addEventListener(
+        "wheel",
+        (event) => {
+          event.preventDefault();
+          gallery.scrollTop += event.deltaY;
+        },
+        { passive: false }
+      );
+    }
+
+    function setupPageWideTouchScroll() {
+      let startY = 0;
+
+      window.addEventListener(
+        "touchstart",
+        (event) => {
+          startY = event.touches[0].clientY;
+        },
+        { passive: true }
+      );
+
+      window.addEventListener(
+        "touchmove",
+        (event) => {
+          event.preventDefault();
+
+          const currentY = event.touches[0].clientY;
+          gallery.scrollTop += startY - currentY;
+          startY = currentY;
+        },
+        { passive: false }
+      );
+    }
+
+    setupPageWideScroll();
+    setupPageWideTouchScroll();
+
+    setLoadingVisible(true);
+    buildGallery();
+  })();
+  </script>
 </body>
 </html>
