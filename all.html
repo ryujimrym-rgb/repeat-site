@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ALL WORKS – RYUJI MARUYAMA</title>
+
+  <script src="//typesquare.com/servlet/tsweb.js?xxxxx"></script>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ALLページ固有で必要な分だけ -->
+  <style>
+    :root{
+      --bg:#f7f7f7;
+      --fg:#545454;
+      --muted:#9a9a9a;
+    }
+    body{
+      margin:0;
+      color:var(--fg);
+      background:var(--bg);
+      font-family: "AXIS Std", "Noto Sans JP", sans-serif;
+
+
+    }
+
+    /* ========= 作品一覧グリッド ========= */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      row-gap:80px;
+      column-gap:100px;
+    }
+
+    /* タブレット：2列 */
+    @media (max-width: 1024px){
+      .grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+        row-gap:60px;
+        column-gap:40px;
+      }
+    }
+
+    /* スマホ：1列 */
+    @media (max-width: 600px){
+      .grid{
+        grid-template-columns:1fr;
+        row-gap:40px;
+        column-gap:0;
+      }
+    }
+
+    .card{
+      text-decoration:none;
+      color:inherit;
+      display:block;
+      opacity:0;
+      transform:translateY(65px);
+      transition:opacity .9s ease-out, transform .9s ease-out;
+    }
+    .card.is-visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .thumb{
+      width:100%;
+      aspect-ratio:16/9;
+      background:#eee;
+      overflow:hidden;
+    }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      margin-top:10px;
+      font-size:.88rem;
+      color:var(--muted);
+      font-weight:200;
+      align-items:baseline;
+    }
+
+    /* ALLページ：番号は非表示、日付を左寄せ */
+    .page-all .meta .idx{ display:none; }
+    .page-all .meta{ justify-content:flex-start; }
+    .page-all .meta .label{
+      flex:none;
+      text-align:left;
+      margin-left:0;
+    }
+    .page-all .meta .meta-alt{ margin-left:auto; }
+
+    @media (max-width: 480px){
+      main{ padding:80px 1.5em 40px; }
+    }
+    .thumb-video iframe{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+/* iframe自体は一切操作できない */
+.page-all .thumb-video iframe {
+  pointer-events: none;
+}
+
+/* でも card 全体はクリックできる */
+.page-all a.card {
+  pointer-events: auto;
+}
+
+  </style>
+</head>
+
+<body class="page-all">
+
+  <header>
+    <div class="header-container">
+      <h1 class="header-title">
+        <a href="profile.html" class="header-title__link js-hover-anim">RYUJI MARUYAMA</a>
+      </h1>
+
+      <nav aria-label="global">
+        <ul>
+          <li><a href="index.html" class="nav-top js-hover-anim">in...</a></li>
+          <li><a href="all.html"   class="nav-all js-hover-anim">etc...</a></li>
+          <li><a href="repeat.html" class="nav-repeat js-hover-anim">repeat...</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div id="grid" class="grid" aria-live="polite" aria-label="all works grid"></div>
+  </main>
+<!-- Footer -->
+  <footer class="profile-footer">
+  <div class="footer-left">
+    <a class="insta-link" href="https://www.instagram.com/ryuji.design/?hl=ja" target="_blank" rel="noopener noreferrer">
+      Instagram
+    </a>
+  </div>
+
+  <div class="footer-center">
+    © RYUJI MARUYAMA 
+  </div>
+
+  <div class="footer-right">
+    
+    <div class="footer-mail">
+      M : <a href="mailto:12347064@stdt.tamabi.ac.jp">12347064@stdt.tamabi.ac.jp</a>
+    </div>
+  </div>
+</footer>
+
+  <script>
+  (() => {
+
+    // =========================
+    // Data
+    // =========================
+    const works = [
+      { thumb:'img/symposium/sym_08.webp',              label:'2026.1－2026.1', url:'works/symposium.html',           title:'"多摩美術大学 学内共同研究 シンポジウム…"  ポスターデザイン' },
+      { thumb:'img/tsukurite/00.webp',              label:'2025.10－2026.1', url:'works/tsukurite.html',           title:'つくりて　と　つなぎて' },
+      // {
+      //   type: 'video',
+      //   video: 'https://player.vimeo.com/video/1155603671?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1&background=1&controls=0&title=0&byline=0&portrait=0&badge=0',
+      //   label: '2025.9－2026.1',
+      //   url:'works/tsukurite.html',
+      //   title:'つくりて　と　つなぎて'
+      // },
+      { thumb:'img/voice/02.webp',              label:'2025.9－2026.1', url:'works/voice.html',           title:'Voice of ▶︎' },
+      // {
+      //   type: 'video',
+      //   video: 'https://player.vimeo.com/video/1154981052?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1&background=1&controls=0&title=0&byline=0&portrait=0&badge=0',
+      //   label: '2025.9－2026.1',
+      //   url:'works/voice.html',
+      //   title:'Voice of ▶︎'
+      // },
+      { thumb:'img/ex/ex_01.webp',              label:'2024.4－2025.11', url:'works/ex.html',           title:'まちだシルクメロン地域共創デザインプロジェクト' },
+      { thumb:'img/info/info_000.webp',          label:'2025.9－2025.9',  url:'works/info.html',         title:'Visualization of ... ' },
+      { thumb:'img/oekaki/oekaki_6.webp',       label:'2025.8－2025.8',  url:'works/oekaki.html',       title:'おえかきパジャマ！' },
+      {
+        type: 'video',
+        video: 'https://player.vimeo.com/video/1106841355?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1&controls=0&background=0&title=0&byline=0&portrait=0&badge=0',
+        label: '2025.6－2025.8',
+        url:'works/kotonohana.html',
+        title:'「言の花」'
+      },
+      {
+        type: 'video',
+        video: 'https://player.vimeo.com/video/1106840594?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1&controls=0&background=0&title=0&byline=0&portrait=0&badge=0',
+        label: '2025.4－2025.8',
+        url:'works/genkideimasuka.html',
+        title:'「げんきでいますか。」'
+      },
+      { thumb:'img/editorial/00.webp',label:'2025.4－2025.8',  url:'works/editorial.html',    title:'そっと、' },
+      { thumb:'img/ak/000.webp',               label:'2025.4－2025.6',  url:'works/ak.html',           title:'小林章特別講義「フォントのふしぎ」ポスター' },
+      { thumb:'img/dekikata/dekikata1.webp',    label:'2024.9－2024.12', url:'works/dekikata.html',     title:'できごとのかたち展2024' },
+      {
+        type: 'video',
+        video: 'https://www.youtube-nocookie.com/embed/ZT_jMFWTNFo?autoplay=1&mute=1&playsinline=1&loop=1&playlist=ZT_jMFWTNFo&controls=0&rel=0&modestbranding=1&showinfo=0',
+        label: '2024.9－2024.12',
+        url: 'works/dekikatamovie.html',
+        title: 'できごとのかたち展2024 ブランディングムービー'
+      },
+      { thumb:'img/shikon/01.webp',      label:'2024.6－2024.8',  url:'works/shikon.html',        title:'Color research by "Shikon"' },
+      { thumb:'img/kaiten/00.webp',           label:'2024.7－2024.7',  url:'works/kaiten.html',     title:'回' },
+      {
+        type: 'video',
+        video: 'https://player.vimeo.com/video/1157808599?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1&controls=0&background=0&title=0&byline=0&portrait=0&badge=0',
+        label: '2024.6－2024.8',
+        url: 'works/fractal.html',
+        title: 'FRACTAL SYSTEM FONT'
+      },
+      { thumb:'img/wabisabi/wabisabi_01.webp',           label:'2024.4－2024.6',  url:'works/wabisabi.html',     title:'わびさび' },
+      // {
+      //   type: 'video',
+      //   video: 'https://player.vimeo.com/video/1153788875?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1&background=1&controls=0&title=0&byline=0&portrait=0&badge=0',
+      //   label: '2024.2－2024.2',
+      //   url: 'works/kaiten.html',
+      //   title: '回'
+      // },
+      { thumb:'img/omomukiiro/0000.webp',         label:'2023.11－2023.12',url:'works/omomuki.html',      title:'おもむき色' },
+      // {
+      //   type: 'video',
+      //   video: 'https://player.vimeo.com/video/1153237403?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1&background=1&controls=0&title=0&byline=0&portrait=0&badge=0',
+      //   label: '2023.11－2023.12',
+      //   url: 'works/omomuki.html',
+      //   title: 'おもむき色'
+      // },
+      { thumb:'img/experience/01.webp',         label:'2023.10－2023.12',url:'works/experience.html',      title:'脱出！夜のパニックミュージアム！' },
+      {
+        type: 'video',
+        video: 'https://player.vimeo.com/video/1153233049?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1&background=1&controls=0&title=0&byline=0&portrait=0&badge=0',
+        label: '2023.11－2023.12',
+        url: 'works/interactive.html',
+        title: 'Interactive Typography'
+      },
+      {
+        type: 'video',
+        video: 'https://player.vimeo.com/video/1153240233?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1&controls=0&background=0&title=0&byline=0&portrait=0&badge=0',
+        label: '2023.11－2023.12',
+        url: 'works/fireworks.html',
+        title: 'Fireworks'
+      },
+      {
+        type: 'video',
+        video: 'https://player.vimeo.com/video/1153240361?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1&controls=0&background=0&title=0&byline=0&portrait=0&badge=0',
+        label: '2023.9－2023.12',
+        url: 'works/ripple.html',
+        title: '光の波紋　-ripples of light-'
+      },
+      { thumb:'img/shiro/shiro_01.webp',        label:'2023.6－2023.8',  url:'works/milk.html',         title:'白' },
+      
+
+      
+    ];
+
+    const grid = document.getElementById('grid');
+    if (!grid) return;
+
+    const pad3 = n => String(n).padStart(3,'0');
+
+    // =========================
+    // hover: header letters split
+    // =========================
+    function splitHoverLetters(el){
+      if (!el || el.dataset.splitted === "1") return;
+      const text = el.textContent;
+      el.textContent = "";
+      [...text].forEach((ch, i) => {
+        const span = document.createElement("span");
+        if (ch === " ") {
+          span.className = "space";
+          span.innerHTML = "&nbsp;";
+        } else {
+          span.textContent = ch;
+        }
+        span.style.setProperty("--i", i);
+        el.appendChild(span);
+      });
+      el.dataset.splitted = "1";
+    }
+    document.querySelectorAll(".js-hover-anim").forEach(splitHoverLetters);
+
+    // =========================
+    // Build grid (newest first)
+    // =========================
+    const newestFirst = works.slice().reverse();
+
+    newestFirst.forEach((w, i) => {
+      const number = works.length - i;
+
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.href = w.url;
+
+      const thumbHTML = (w.type === 'video')
+  ? `
+    <div class="thumb thumb-video">
+      <iframe
+        src="${w.video}"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen
+        tabindex="-1"
+      ></iframe>
+    </div>
+  `
+  : `
+    <div class="thumb">
+      <img src="${w.thumb}" alt="work ${pad3(number)}">
+    </div>
+  `;
+
+a.innerHTML = `
+  ${thumbHTML}
+  <div class="meta">
+    <span class="idx">${pad3(number)}</span>
+    <span class="label">${w.label ?? ''}</span>
+    <span class="meta-alt">${w.title ?? ''}</span>
+  </div>
+`;
+
+
+
+      grid.prepend(a);
+
+      // meta-alt: split to spans (for your nyoki animation in CSS)
+      const alt = a.querySelector('.meta-alt');
+      if (alt) {
+        const t = alt.textContent.trim();
+        alt.textContent = '';
+        [...t].forEach((ch, j) => {
+          const span = document.createElement('span');
+          span.textContent = ch;
+          span.style.setProperty('--i', j);
+          alt.appendChild(span);
+        });
+      }
+    });
+
+    // =========================
+    // Reveal cards on scroll
+    // =========================
+    const cards = document.querySelectorAll(".page-all .card");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: "0px 0px -10% 0px"
+    });
+    cards.forEach(card => io.observe(card));
+
+    // =========================
+    // Mobile: meta auto toggle
+    // =========================
+    const isSp = window.matchMedia("(max-width: 768px)").matches;
+    if (isSp) {
+      const metas = document.querySelectorAll(".page-all .meta");
+      if (metas.length) {
+        metas.forEach(meta => meta.classList.add("state-base"));
+        let showAlt = false;
+
+        setInterval(() => {
+          showAlt = !showAlt;
+          metas.forEach(meta => {
+            if (showAlt) {
+              meta.classList.remove("state-base", "from-alt");
+              void meta.offsetWidth;
+              meta.classList.add("state-alt");
+            } else {
+              meta.classList.remove("state-alt");
+              void meta.offsetWidth;
+              meta.classList.add("state-base", "from-alt");
+            }
+          });
+        }, 4000);
+      }
+    }
+
+  })();
+  </script>
+
+</body>
+</html>
