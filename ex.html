@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>016 | Ryuji Maruyama</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="page-work">
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <h1 class="header-title">
+        <a href="../profile.html" class="header-title__link js-hover-anim">RYUJI MARUYAMA</a>
+      </h1>
+      <nav aria-label="global">
+        <ul>
+          <li><a href="../index.html" class="nav-top js-hover-anim">in...</a></li>
+          <li><a href="../all.html"   class="nav-all js-hover-anim">etc...</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="work-main">
+    <div class="work-text">
+      <h2>まちだシルクメロン地域共創デザインプロジェクト</h2>
+      <p>
+        多摩美術大学創立90周年記念事業 EXPLOSION &amp; EXPANSION 爆発と拡張<br>
+        ―― 多摩美術大学の制作の現場から
+      </p>
+      <p class="work-meta">
+        3illi / SigoKanaida, SakiManabe, RyujiMaruyama<br>
+        2025.4－2025.11
+      </p>
+    </div>
+
+    <div class="work-images">
+      <img src="../img/ex/ex_02.webp" alt="Project image 01">
+
+      <div class="img-row">
+        <img src="../img/ex/ex_03.webp" alt="Project image 02">
+        <img src="../img/ex/ex_04.webp" alt="Project image 03">
+      </div>
+
+      <img src="../img/ex/ex_05.webp" alt="Project image 04">
+      <img src="../img/ex/ex_06.webp" alt="Project image 05">
+
+      <div class="img-row">
+        <img src="../img/ex/ex_07.webp" alt="Project image 06">
+        <img src="../img/ex/ex_019.webp" alt="Project image 07">
+      </div>
+
+      <img src="../img/ex/ex_08.webp" alt="Project image 08">
+
+      <div class="img-row">
+        <img src="../img/ex/ex_010.webp" alt="Project image 09">
+        <img src="../img/ex/ex_011.webp" alt="Project image 10">
+      </div>
+
+      <div class="img-row">
+        <img src="../img/ex/ex_012.webp" alt="Project image 11">
+        <img src="../img/ex/ex_013.webp" alt="Project image 12">
+      </div>
+
+      <div class="img-row">
+        <img src="../img/ex/ex_014.webp" alt="Project image 13">
+        <img src="../img/ex/ex_015.webp" alt="Project image 14">
+      </div>
+
+      <div class="img-row">
+        <img src="../img/ex/ex_016.webp" alt="Project image 15">
+        <img src="../img/ex/ex_017.webp" alt="Project image 16">
+      </div>
+
+      <div class="img-row">
+        <img src="../img/ex/ex_020.webp" alt="Project image 17">
+        <img src="../img/ex/ex_09.webp" alt="Project image 18">
+      </div>
+    </div>
+  </main>
+
+  <script>
+  (() => {
+
+    // =========================
+    // Header hover letters split
+    // =========================
+    function splitHoverLetters(el){
+      if (!el || el.dataset.splitted === "1") return;
+
+      const text = el.textContent;
+      el.textContent = "";
+
+      [...text].forEach((ch, i) => {
+        const span = document.createElement("span");
+        if (ch === " ") {
+          span.className = "space";
+          span.innerHTML = "&nbsp;";
+        } else {
+          span.textContent = ch;
+        }
+        span.style.setProperty("--i", i);
+        el.appendChild(span);
+      });
+
+      el.dataset.splitted = "1";
+    }
+
+    document.querySelectorAll(".js-hover-anim").forEach(splitHoverLetters);
+
+    // =========================
+    // Reveal on scroll (IntersectionObserver)
+    // =========================
+    document.documentElement.classList.add("js");
+
+    const isSp = window.matchMedia("(max-width: 768px)").matches;
+
+    // PC: reveal .img-row as a block
+    // SP: reveal each img/iframe individually
+    const selector = isSp
+      ? ".page-work .work-images img, .page-work .work-images iframe"
+      : ".page-work .work-images > img, .page-work .work-images > iframe, .page-work .work-images > .img-row";
+
+    const targets = document.querySelectorAll(selector);
+    if (!targets.length) return;
+
+    targets.forEach(el => el.classList.add("reveal-img"));
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle("is-inview", entry.isIntersecting);
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: "0px 0px -10% 0px"
+    });
+
+    targets.forEach(el => io.observe(el));
+
+  })();
+  </script>
+
+</body>
+</html>
